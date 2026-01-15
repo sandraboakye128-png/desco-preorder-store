@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --desco-blue: #0a58ca;
+  --desco-light: #f8fbff;
+  --desco-dark: #0f172a;
+}
+
+/* helper utility classes */
+.text-desco { color: var(--desco-blue); }
+.bg-desco { background-color: var(--desco-blue); }
+.bg-desco-light { background-color: var(--desco-light); }
+.text-desco-dark { color: var(--desco-dark); }
+
+body {
+  @apply bg-desco-light text-gray-800;
+}
