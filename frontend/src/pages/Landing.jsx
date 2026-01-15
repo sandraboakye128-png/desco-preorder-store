@@ -6,10 +6,13 @@ export default function Landing() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Fetch from live backend using environment variable
+  const API = import.meta.env.VITE_API_URL || "https://desco-preorder-store.onrender.com";
+
   useEffect(() => {
     const fetchLandingImages = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/landing-images");
+        const res = await fetch(`${API}/api/landing-images`);
         const data = await res.json();
         setImages(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -18,8 +21,9 @@ export default function Landing() {
         setLoading(false);
       }
     };
+
     fetchLandingImages();
-  }, []);
+  }, [API]);
 
   const heroImage = images.length > 0 ? images[0].image : null;
 

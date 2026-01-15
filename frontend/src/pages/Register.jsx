@@ -10,7 +10,8 @@ function Register() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  // ✅ Use live API URL from environment variable
+  const API = import.meta.env.VITE_API_URL || "https://desco-preorder-store.onrender.com";
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -21,8 +22,7 @@ function Register() {
       const res = await fetch(`${API}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-
-        // 🔥 THIS MUST MATCH YOUR DATABASE COLUMN
+        // 🔥 Database column must match backend
         body: JSON.stringify({
           full_name: fullName,
           email,
@@ -40,6 +40,7 @@ function Register() {
       setSuccess("Account created successfully! Redirecting...");
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
+      console.error("Register fetch error:", err);
       setError("Server not responding.");
     }
   };

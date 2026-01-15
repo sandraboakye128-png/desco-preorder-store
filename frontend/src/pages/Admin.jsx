@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 const ADMIN_PANEL_PASSWORD = "desco-admin-2026";
 
 export default function Admin() {
-  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API = import.meta.env.VITE_API_URL || "https://desco-preorder-store.onrender.com";
   const token = localStorage.getItem("token");
 
   /* ================= PASSWORD UNLOCK ================= */

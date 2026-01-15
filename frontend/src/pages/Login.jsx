@@ -9,8 +9,10 @@ function Login() {
   const [welcomeMsg, setWelcomeMsg] = useState("");
   const navigate = useNavigate();
 
-  const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  // ✅ Use live API URL from environment variable
+  const API = import.meta.env.VITE_API_URL || "https://desco-preorder-store.onrender.com";
 
+  // Set welcome message based on logged-in user
   useEffect(() => {
     const user = localStorage.getItem("user");
 
@@ -22,6 +24,7 @@ function Login() {
     }
   }, []);
 
+  // Handle login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -40,12 +43,15 @@ function Login() {
         return;
       }
 
+      // Save user and token to localStorage
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token || "");
-      localStorage.setItem("is_staff", data.user.isAdmin ? "true" : "false");
+      localStorage.setItem("is_staff", data.user.role === "admin" ? "true" : "false");
 
+      // Redirect to profile
       navigate("/profile");
     } catch (err) {
+      console.error("Login fetch error:", err);
       setError("Server not responding.");
     }
   };

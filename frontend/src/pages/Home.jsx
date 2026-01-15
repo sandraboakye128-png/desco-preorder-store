@@ -10,13 +10,21 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeImage, setActiveImage] = useState(0);
 
+  // ✅ Live backend URL from environment variable
   const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
-    fetch(`${API}/api/products`)
-      .then((res) => res.json())
-      .then((data) => setProducts(Array.isArray(data) ? data : []))
-      .catch((err) => console.error("Error loading products:", err));
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${API}/api/products`);
+        const data = await res.json();
+        setProducts(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error loading products:", err);
+      }
+    };
+
+    fetchProducts();
   }, [API]);
 
   const categories = [
@@ -45,12 +53,9 @@ export default function Home() {
   return (
     <div className="bg-blue-50 min-h-screen py-6">
       <div className="max-w-6xl mx-auto px-3 sm:px-4">
-
         {/* HERO */}
         <div className="bg-gradient-to-r from-blue-700 to-sky-500 rounded-xl mb-5 p-4 text-white shadow">
-          <h1 className="text-xl sm:text-2xl font-extrabold">
-            DESCO Preorder Store
-          </h1>
+          <h1 className="text-xl sm:text-2xl font-extrabold">DESCO Preorder Store</h1>
           <p className="text-sm mt-1 opacity-95">
             Quality appliances & essentials — preorder with ease.
           </p>

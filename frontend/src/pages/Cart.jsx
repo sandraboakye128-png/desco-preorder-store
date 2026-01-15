@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 export default function Cart() {
   const cartContext = useCart();
 
-  // 🔒 SAFE FALLBACKS
   const cart = cartContext?.cart || [];
   const removeFromCart = cartContext?.removeFromCart || (() => {});
   const totalPrice = cartContext?.totalPrice || 0;
@@ -25,15 +24,17 @@ export default function Cart() {
             >
               <div className="flex items-center gap-3">
                 <img
-                  src={item.image}
-                  className="h-16 w-16 object-contain"
+                  src={
+                    item.image?.startsWith("http")
+                      ? item.image
+                      : `${import.meta.env.VITE_API_URL}${item.image}`
+                  }
                   alt={item.name}
+                  className="h-16 w-16 object-contain"
                 />
                 <div>
                   <p className="font-semibold">{item.name}</p>
-                  <p className="text-desco font-bold">
-                    ₵{item.price.toLocaleString()}
-                  </p>
+                  <p className="text-desco font-bold">₵{item.price.toLocaleString()}</p>
                 </div>
               </div>
 
@@ -47,10 +48,7 @@ export default function Cart() {
           ))}
 
           <div className="bg-white p-4 rounded shadow mt-4 flex justify-between items-center">
-            <p className="font-bold text-lg">
-              Total: ₵{totalPrice.toLocaleString()}
-            </p>
-
+            <p className="font-bold text-lg">Total: ₵{totalPrice.toLocaleString()}</p>
             <Link
               to="/checkout"
               className="bg-desco text-white px-6 py-2 rounded"

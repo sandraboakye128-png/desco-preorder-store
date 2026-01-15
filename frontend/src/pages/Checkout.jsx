@@ -6,6 +6,7 @@ export default function Checkout() {
   const { cart, clearCart, totalPrice } = useCart();
   const navigate = useNavigate();
 
+  // ✅ Use live backend from env
   const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const [form, setForm] = useState({
@@ -14,10 +15,8 @@ export default function Checkout() {
     delivery_address: "",
   });
 
-  // Get logged-in user
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // ✅ SAFE redirect (DO NOT navigate during render)
   useEffect(() => {
     if (!user) {
       alert("Please log in to checkout");
@@ -34,7 +33,7 @@ export default function Checkout() {
     }
 
     const payload = {
-      user_id: user.id, // UUID-safe
+      user_id: user.id,
       full_name: form.full_name,
       phone: form.phone,
       delivery_address: form.delivery_address,
@@ -62,9 +61,8 @@ export default function Checkout() {
         return;
       }
 
-      // ✅ success
       clearCart();
-      navigate("/success"); // ✅ MATCHES App.jsx ROUTE
+      navigate("/success"); // Matches App.jsx route
     } catch (err) {
       console.error("Checkout error:", err);
       alert("Checkout failed. Please try again.");
@@ -75,46 +73,31 @@ export default function Checkout() {
     <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold text-blue-600 mb-4">Checkout</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow space-y-4"
-      >
+      <form className="bg-white p-6 rounded shadow space-y-4" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Full Name"
-          className="border p-2 w-full rounded"
           value={form.full_name}
           required
-          onChange={(e) =>
-            setForm({ ...form, full_name: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+          className="border p-2 w-full rounded"
         />
-
         <input
           type="text"
           placeholder="Phone Number"
-          className="border p-2 w-full rounded"
           value={form.phone}
           required
-          onChange={(e) =>
-            setForm({ ...form, phone: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          className="border p-2 w-full rounded"
         />
-
         <textarea
           placeholder="Delivery Address"
-          className="border p-2 w-full rounded"
           value={form.delivery_address}
           required
-          onChange={(e) =>
-            setForm({ ...form, delivery_address: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, delivery_address: e.target.value })}
+          className="border p-2 w-full rounded"
         />
-
-        <p className="font-bold">
-          Total: ₵{Number(totalPrice).toLocaleString()}
-        </p>
-
+        <p className="font-bold">Total: ₵{Number(totalPrice).toLocaleString()}</p>
         <button
           type="submit"
           className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition"
