@@ -121,14 +121,15 @@ function requireAdmin(req, res, next) {
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "http://localhost:3000",
-      "https://desco-frontend.onrender.com",
+      "http://localhost:5173", // local dev Vite
+      "http://localhost:3000", // local dev React
+      "https://desco-preorder-store-1.onrender.com" // deployed frontend on Render
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 // ---------- MULTER ----------
 const storage = multer.memoryStorage();
