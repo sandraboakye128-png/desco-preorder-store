@@ -10,7 +10,6 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeImage, setActiveImage] = useState(0);
 
-  // ✅ Live backend URL
   const API =
     import.meta.env.VITE_API_URL ||
     "https://desco-preorder-store.onrender.com";
@@ -49,7 +48,6 @@ export default function Home() {
             activeCategory.toLowerCase()
         );
 
-  // ✅ Collect available images
   const getImages = (product) =>
     [product.image1, product.image2, product.image3].filter(Boolean);
 
@@ -90,7 +88,7 @@ export default function Home() {
               key={product.id}
               onClick={() => {
                 setSelectedProduct(product);
-                setActiveImage(0); // reset to first image
+                setActiveImage(0);
               }}
             >
               <ProductCard
@@ -108,7 +106,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* PRODUCT MODAL */}
+      {/* MODAL */}
       <AnimatePresence>
         {selectedProduct && (
           <motion.div
@@ -117,7 +115,6 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-3"
           >
-            {/* BACKDROP */}
             <div
               className="absolute inset-0 bg-black/70"
               onClick={() => setSelectedProduct(null)}
@@ -141,26 +138,22 @@ export default function Home() {
                   alt={selectedProduct.name}
                 />
 
-                {/* IMAGE THUMBNAILS */}
-                {getImages(selectedProduct).length > 1 && (
-                  <div className="flex justify-center gap-2 mt-3">
-                    {getImages(selectedProduct).map((img, idx) => (
-                      <img
-                        key={idx}
-                        src={img.startsWith("http") ? img : `${API}${img}`}
-                        onClick={() => setActiveImage(idx)}
-                        className={`h-14 w-14 object-contain border rounded cursor-pointer ${
-                          activeImage === idx
-                            ? "border-blue-600"
-                            : "border-gray-300"
-                        }`}
-                        alt={`preview-${idx}`}
-                      />
-                    ))}
-                  </div>
-                )}
+                {/* THUMBNAILS (MOBILE FIX ✅) */}
+                <div className="flex justify-center gap-2 mt-3">
+                  {getImages(selectedProduct).map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img.startsWith("http") ? img : `${API}${img}`}
+                      onClick={() => setActiveImage(idx)}
+                      className={`h-14 w-14 object-contain border rounded cursor-pointer ${
+                        activeImage === idx
+                          ? "border-blue-600"
+                          : "border-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
 
-                {/* DETAILS */}
                 <h2 className="mt-4 font-bold text-gray-800 text-lg text-center">
                   {selectedProduct.name}
                 </h2>
