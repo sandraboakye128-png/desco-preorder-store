@@ -10,8 +10,10 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeImage, setActiveImage] = useState(0);
 
-  // ✅ Live backend URL from environment variable
-  const API = import.meta.env.VITE_API_URL || "https://desco-preorder-store.onrender.com";
+  // ✅ Live backend URL
+  const API =
+    import.meta.env.VITE_API_URL ||
+    "https://desco-preorder-store.onrender.com";
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -47,6 +49,7 @@ export default function Home() {
             activeCategory.toLowerCase()
         );
 
+  // ✅ Collect available images
   const getImages = (product) =>
     [product.image1, product.image2, product.image3].filter(Boolean);
 
@@ -55,7 +58,9 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-3 sm:px-4">
         {/* HERO */}
         <div className="bg-gradient-to-r from-blue-700 to-sky-500 rounded-xl mb-5 p-4 text-white shadow">
-          <h1 className="text-xl sm:text-2xl font-extrabold">DESCO Preorder Store</h1>
+          <h1 className="text-xl sm:text-2xl font-extrabold">
+            DESCO Preorder Store
+          </h1>
           <p className="text-sm mt-1 opacity-95">
             Quality appliances & essentials — preorder with ease.
           </p>
@@ -85,7 +90,7 @@ export default function Home() {
               key={product.id}
               onClick={() => {
                 setSelectedProduct(product);
-                setActiveImage(0);
+                setActiveImage(0); // reset to first image
               }}
             >
               <ProductCard
@@ -103,7 +108,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* MODAL */}
+      {/* PRODUCT MODAL */}
       <AnimatePresence>
         {selectedProduct && (
           <motion.div
@@ -112,6 +117,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-3"
           >
+            {/* BACKDROP */}
             <div
               className="absolute inset-0 bg-black/70"
               onClick={() => setSelectedProduct(null)}
@@ -124,6 +130,7 @@ export default function Home() {
               className="bg-white rounded-xl max-w-lg w-full z-50 overflow-hidden"
             >
               <div className="p-4">
+                {/* MAIN IMAGE */}
                 <img
                   src={
                     getImages(selectedProduct)[activeImage]?.startsWith("http")
@@ -134,6 +141,26 @@ export default function Home() {
                   alt={selectedProduct.name}
                 />
 
+                {/* IMAGE THUMBNAILS */}
+                {getImages(selectedProduct).length > 1 && (
+                  <div className="flex justify-center gap-2 mt-3">
+                    {getImages(selectedProduct).map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={img.startsWith("http") ? img : `${API}${img}`}
+                        onClick={() => setActiveImage(idx)}
+                        className={`h-14 w-14 object-contain border rounded cursor-pointer ${
+                          activeImage === idx
+                            ? "border-blue-600"
+                            : "border-gray-300"
+                        }`}
+                        alt={`preview-${idx}`}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {/* DETAILS */}
                 <h2 className="mt-4 font-bold text-gray-800 text-lg text-center">
                   {selectedProduct.name}
                 </h2>
